@@ -3,7 +3,7 @@
 
 Install dependencies
 
-Make sure you have poetry installed https://python-poetry.org/docs/.
+Make sure you have python = "^3.12" and poetry installed https://python-poetry.org/docs/.
 
 And create PostgreSQL database "crossword".
 
