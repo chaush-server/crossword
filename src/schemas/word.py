@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from src.enums import Direction
 
 
-class WordSchema(BaseModel):
+class LevelWordSchema(BaseModel):
     id: int
     word: str
     translate: Optional[str]

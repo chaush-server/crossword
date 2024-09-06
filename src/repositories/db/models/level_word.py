@@ -5,14 +5,14 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.enums import Direction
 from src.repositories.db.models.base import Base
-from src.schemas.word import WordSchema
+from src.schemas.word import LevelWordSchema
 
 if TYPE_CHECKING:
     from src.repositories.db.models import Level
 
 
-class Word(Base):
-    __tablename__ = "word"
+class LevelWord(Base):
+    __tablename__ = "level_word"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     word: Mapped[str] = mapped_column()
@@ -22,10 +22,10 @@ class Word(Base):
     translate: Mapped[str] = mapped_column(nullable=True)
     level_id: Mapped[int] = mapped_column(ForeignKey("level.id"), nullable=False)
 
-    level: Mapped["Level"] = relationship("Level", back_populates="words")
+    level: Mapped["Level"] = relationship("Level", back_populates="level_words")
 
-    def to_read_model(self) -> WordSchema:
-        return WordSchema(
+    def to_read_model(self) -> LevelWordSchema:
+        return LevelWordSchema(
             id=self.id,
             word=self.word,
             translate=self.translate,
