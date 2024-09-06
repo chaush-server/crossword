@@ -1,8 +1,9 @@
-from pydantic import BaseModel
+from pydantic import ConfigDict
+
+from src.schemas import BaseSchema
 
 
-class TextStat(BaseModel):
+class TextStat(BaseSchema):
     complexity: dict
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

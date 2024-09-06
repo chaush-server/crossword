@@ -1,17 +1,13 @@
 from typing import Optional
 
-from pydantic import BaseModel
-
 from src.enums import Direction
+from src.schemas import BaseSchema
 
 
-class LevelWordSchema(BaseModel):
+class LevelWordSchema(BaseSchema):
     id: int
     word: str
     translate: Optional[str]
     direction: Direction
     x: int
     y: int
-
-    class Config:
-        from_attributes = True

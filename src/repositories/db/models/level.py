@@ -13,10 +13,12 @@ class Level(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     chars: Mapped[str] = mapped_column()
 
-    words: Mapped[List[LevelWord]] = relationship(back_populates="level", lazy="selectin")
+    level_words: Mapped[List[LevelWord]] = relationship(
+        back_populates="level", lazy="selectin"
+    )
 
     def to_read_model(self) -> LevelSchema:
-        words = [word.to_read_model() for word in self.words]
+        words = [word.to_read_model() for word in self.level_words]
         return LevelSchema(
             id=self.id,
             chars=self.chars,

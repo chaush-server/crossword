@@ -3,9 +3,14 @@ from typing import Annotated, List
 from fastapi import APIRouter, Depends
 
 from src.schemas.level import LevelSchema
-from src.api.dependencies import provide_level_service, provide_cross_maker_service
+from src.api.dependencies import (
+    provide_level_service,
+    provide_cross_maker_service,
+    provide_word_service,
+)
 from src.services.cross_maker import CrossMakerService
 from src.services.level import LevelService
+from src.services.word import WordService
 
 level_router = APIRouter(prefix="/levels", tags=["Levels"])
 
@@ -30,11 +35,20 @@ async def get_level(
 @level_router.post("/generate/{difficulty}")
 async def generate_level(
     difficulty: int,
-    cross_maker_service: Annotated[CrossMakerService, Depends(provide_cross_maker_service)],
+    cross_maker_service: Annotated[
+        CrossMakerService, Depends(provide_cross_maker_service)
+    ],
+    word_service: Annotated[WordService, Depends(provide_word_service)],
 ):
     if difficulty < 2:
-        # TODO: add words getting from db
-        words = ["селям", "лютфен", "фииль", "нар", "тёгерек"]
+        words = await word_service.get_random_words(word_count=10, max_unique_chars=10)
+        words = [word.word for word in words]
+        chars = set()
+        for word in words:
+            for i in word:
+                chars.add(i)
+        print(chars)
+        print(len(chars))
     else:
         words = ["тест1", "тест2", "тест3", "тест4", "тест5"]
     return await cross_maker_service.make_crossword(words)

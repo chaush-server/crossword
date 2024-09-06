@@ -1,8 +1,5 @@
-from pydantic import BaseModel
+from src.schemas import BaseSchema
 
 
-class TextSchema(BaseModel):
+class TextSchema(BaseSchema):
     text: str
-
-    class Config:
-        from_attributes = True
