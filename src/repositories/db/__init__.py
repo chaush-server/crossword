@@ -4,7 +4,6 @@ from typing import (
     TypeVar,
     Generic,
     Optional,
-    List,
     AsyncGenerator,
     Dict,
     Any,
