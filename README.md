@@ -19,6 +19,11 @@ Copy .env.example to .env and edit it:
 cp .env.example .env
 ```
 
+Enter into poetry shell:
+```bash
+poetry shell
+```
+
 Run migrations
 ```bash
 alembic upgrade head
