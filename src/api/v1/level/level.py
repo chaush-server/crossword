@@ -32,23 +32,20 @@ async def get_level(
     return level
 
 
-@level_router.post("/generate/{difficulty}")
+@level_router.post("/generate/{difficulty}", response_model=LevelSchema)
 async def generate_level(
     difficulty: int,
     cross_maker_service: Annotated[
         CrossMakerService, Depends(provide_cross_maker_service)
     ],
     word_service: Annotated[WordService, Depends(provide_word_service)],
-):
+) -> LevelSchema:
     if difficulty < 2:
         words = await word_service.get_random_words(word_count=10, max_unique_chars=10)
-        words = [word.word for word in words]
         chars = set()
         for word in words:
-            for i in word:
+            for i in word.word:
                 chars.add(i)
-        print(chars)
-        print(len(chars))
     else:
         words = ["тест1", "тест2", "тест3", "тест4", "тест5"]
     return await cross_maker_service.make_crossword(words)

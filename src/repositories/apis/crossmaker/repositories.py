@@ -16,7 +16,7 @@ class CrossMakerRepository(CrossMakerRepositoryInterface):
     def __init__(self, client: AsyncClient):
         self.client = client
 
-    async def make_crossword(self, words: Sequence[str]) -> str:
+    async def make_crossword(self, words: Sequence[str]):
         r = await self.client.put(
             url=Config.CROSSMAKER_URL, json={"size": 25, "words": words}
         )
