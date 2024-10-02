@@ -5,6 +5,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.enums import Direction
 from src.repositories.db.models.base import Base
+from src.schemas.char import LevelCharSchema
 from src.schemas.word import LevelWordSchema
 
 if TYPE_CHECKING:
@@ -29,7 +30,5 @@ class LevelWord(Base):
             id=self.id,
             word=self.word,
             translate=self.translate,
-            direction=self.direction,
-            x=self.x,
-            y=self.y,
+            chars=LevelCharSchema.get_chars_from_word(self),
         )
