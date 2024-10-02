@@ -1,13 +1,11 @@
-from typing import Optional
+from typing import Optional, List
 
-from src.enums import Direction
 from src.schemas import BaseSchema
+from src.schemas.char import LevelCharSchema
 
 
 class LevelWordSchema(BaseSchema):
     id: int
     word: str
     translate: Optional[str]
-    direction: Direction
-    x: int
-    y: int
+    chars: List[LevelCharSchema]
