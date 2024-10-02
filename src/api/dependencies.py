@@ -15,9 +15,21 @@ from src.services.word import WordService
 
 
 async def provide_level_service(
-    session: Annotated[AsyncSession, Depends(get_async_session)]
+    session: Annotated[
+        AsyncSession,
+        Depends(get_async_session),
+    ],
 ) -> LevelService:
     return LevelService(LevelRepository(session))
+
+
+async def provide_word_service(
+    session: Annotated[
+        AsyncSession,
+        Depends(get_async_session),
+    ],
+) -> WordService:
+    return WordService(WordRepository(session))
 
 
 async def provide_analyzer_service() -> AnalyzerService:
@@ -29,8 +41,3 @@ async def provide_cross_maker_service() -> CrossMakerService:
         CrossMakerRepository(client=AsyncClient(base_url=Config.CROSSMAKER_BASE_URL))
     )
 
-
-async def provide_word_service(
-    session: Annotated[AsyncSession, Depends(get_async_session)]
-) -> WordService:
-    return WordService(WordRepository(session))

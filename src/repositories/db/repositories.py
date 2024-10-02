@@ -2,7 +2,7 @@ import random
 from collections import Counter
 from typing import Sequence, cast, List
 
-from sqlalchemy import select, func
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.repositories.db.models import Word
@@ -22,13 +22,10 @@ class WordRepository(SQLAlchemyRepository[Word]):
     async def get_random_words(
         self, word_count: int, max_unique_chars: int
     ) -> Sequence[Word]:
-        unique_chars = Counter()
+        unique_chars: Counter[str] = Counter()
         words = []
         # Получаем все слова из таблицы Words
-        result = await self.session.execute(
-            select(Word).where(Word.language_id == 1)  # type: ignore
-        )
-        all_words = cast(List[Word], result.scalars().all())
+        all_words = list(await self.session.scalars(select(Word).where(Word.language_id == 1)))
 
         random.shuffle(all_words)
         for word in all_words:
@@ -46,9 +43,3 @@ class WordRepository(SQLAlchemyRepository[Word]):
             if len(words) == word_count:
                 break
         return words
-
-
-def unique_char_count(column):
-    return func.length(column) - func.length(
-        func.replace(column, func.left(column, 1), "")
-    )

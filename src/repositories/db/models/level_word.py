@@ -30,5 +30,5 @@ class LevelWord(Base):
             id=self.id,
             word=self.word,
             translate=self.translate,
-            chars=LevelCharSchema.get_chars_from_word(self),
+            chars=LevelCharSchema.from_word(self),
         )
