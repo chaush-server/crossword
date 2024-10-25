@@ -1,13 +1,12 @@
 from typing import List
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
-from src.schemas.word import LevelWordSchema
+from src.schemas.word import Word
 
 
-class LevelSchema(BaseModel):
-    id: int
-    chars: str
-    words: List[LevelWordSchema]
+class Level(BaseModel):
+    size: int
+    chars: List[str]
+    words: List[Word]
 
-    model_config = ConfigDict(from_attributes=True)

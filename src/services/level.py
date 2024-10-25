@@ -1,17 +1,40 @@
-from typing import List
+from typing import Dict, Any
 
-from src.repositories.db.repositories import LevelRepository
-from src.schemas.level import LevelSchema
+from src.enums import Direction
+from src.schemas.char import Char
+from src.schemas.level import Level
+from src.schemas.word import Word
 
 
 class LevelService:
-    def __init__(self, level_repo: LevelRepository):
-        self.level_repo: LevelRepository = level_repo
+    @staticmethod
+    def get_char_from_attrs(i: int, char: str, x: int, y: int, direction: str) -> Char:
+        if direction == Direction.H:
+            x += i
+        elif direction == Direction.V:
+            y += i
+        return Char(char=char, x=x, y=y)
 
-    async def get_level(self, level_id: int) -> LevelSchema:
-        level = await self.level_repo.get_by_id(level_id)
-        return level.to_read_model()
+    @classmethod
+    def word_from_cross(cls, word: Dict[str, Any]) -> Word:
+        chars = []
+        for i, char in enumerate(word["word"]):
+            chars.append(
+                cls.get_char_from_attrs(
+                    char=char, x=word["x"], y=word["y"], i=i, direction=word["direction"]
+                )
+            )
 
-    async def get_levels(self) -> List[LevelSchema]:
-        levels = await self.level_repo.get_all()
-        return [level.to_read_model() for level in levels]
+        return Word(
+            word=word["word"],
+            chars=chars,
+        )
+
+    @classmethod
+    def level_from_cross(cls, cross: Dict[str, Any]) -> Level:
+        chars = list(set("".join(cross["words_used"])))
+        return Level(
+            size=cross["size"],
+            chars=chars,
+            words=[cls.word_from_cross(word) for word in cross["cross"]],
+        )

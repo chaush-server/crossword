@@ -1,4 +1,3 @@
-import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 
@@ -23,7 +22,3 @@ def create_app() -> FastAPI:
         )
 
     return app
-
-
-if __name__ == "__main__":
-    uvicorn.run(app="src:create_app", reload=True)

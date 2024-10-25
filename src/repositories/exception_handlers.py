@@ -1,4 +1,4 @@
-from typing import Any, Callable, Coroutine
+from typing import Any, Callable
 
 from fastapi import Request
 from fastapi.responses import JSONResponse
